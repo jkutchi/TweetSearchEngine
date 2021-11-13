@@ -1,6 +1,6 @@
-import "./SearchBar.css";
+import "./SearchForm.css";
 
-function SearchBar() {
+function SearchForm() {
     return (
         <form className="search" action="" method="get">
             <input
@@ -19,4 +19,4 @@ function SearchBar() {
     )
 }
 
-export default SearchBar;
+export default SearchForm;

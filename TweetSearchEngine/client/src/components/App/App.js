@@ -1,4 +1,4 @@
-import SearchBar from '../SearchBar/SearchBar';
+import SearchForm from '../SearchForm/SearchForm';
 import Title from '../Title/Title';
 import "./App.css";
 
@@ -8,7 +8,7 @@ function App() {
         <div className="title">
           <Title/>
         </div>
-        <SearchBar />
+        <SearchForm />
       </div>
   );
 }
