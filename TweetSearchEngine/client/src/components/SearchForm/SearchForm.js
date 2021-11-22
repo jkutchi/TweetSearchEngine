@@ -1,6 +1,10 @@
 import "./SearchForm.css";
 
 function SearchForm() {
+    var handleTweetSearch = (e) => {
+        const searchTerm = e.currentTarget.value;
+    }
+    
     return (
         <form className="search" action="" method="get">
             <input
@@ -8,6 +12,7 @@ function SearchForm() {
                 id="search"
                 placeholder="Search tweets"
                 name="search"
+                onChange={handleTweetSearch}
             />
             <button
                 type="submit"
