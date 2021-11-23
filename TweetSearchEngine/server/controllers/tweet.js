@@ -16,7 +16,7 @@ async function queryTweets(text) {
 }
 
 async function getTweets(req, res) {
-    const results = await queryTweets('Steve Irwin');
+    const results = await queryTweets(req.params.query);
     res.send(results);
 }
 
