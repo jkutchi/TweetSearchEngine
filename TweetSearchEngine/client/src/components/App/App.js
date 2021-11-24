@@ -1,16 +1,17 @@
-import SearchForm from '../SearchForm/SearchForm';
-import Title from '../Title/Title';
-import "./App.css";
+import { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LandingPage from "../LandingPage/LandingPage";
 
-function App() {
+class App extends Component {
+  render() {
   return (
-    <div className="flex-center position-ref full-height">
-        <div className="title">
-          <Title/>
-        </div>
-        <SearchForm />
-      </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={LandingPage}/>
+      </Switch>
+    </Router>
   );
+  }
 }
 
 export default App;
