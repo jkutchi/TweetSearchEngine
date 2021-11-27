@@ -18,23 +18,21 @@ function SearchForm() {
     };
 
     const inputStyle = { 
-      display: "flex",
       padding: '15px',
       fontSize: '18px',
       border: '1px solid gray',
       float: 'left',
-      width: '100%',
+      width: '69%',
       background: '#f1f1f1',
       borderRadius: '25px',
       marginRight: '15px',
     }
 
-
-
     return (
         <form className="search" action="" method="get">
             <Autocomplete 
               items={suggestions}
+              wrapperStyle={{style: inputStyle}}
               inputProps={{style: inputStyle}}
               onChange={handleTweetSearch}
               value={query}
