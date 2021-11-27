@@ -1,41 +1,59 @@
-import { Component } from "react";
+import { Component, useState } from "react";
+import Autocomplete from "react-autocomplete";
 import "./SearchForm.css";
 import axios from 'axios';
 
-class SearchForm extends Component {
+function SearchForm() {
 
-    constructor() {
-        super();
-        this.host = window.location.hostname;
-        this.port = 5000;
-    };
+    const host = window.location.hostname;
+    const port = 5000;
+    var [suggestions, setSuggestions] = useState([]);
+    var [query, setQuery] = useState('');
 
-    handleTweetSearch = (e) => {
-        const query = e.currentTarget.value;
-        axios.get(`${this.host}:${this.port}/search/${query}`).then((res) => {
-            console.log(res);
+    function handleTweetSearch(e) {
+        setQuery(e.currentTarget.value);
+        axios.get(`http://${host}:${port}/search/${query}`).then((res) => {
+            setSuggestions(res.data);
         });
     };
 
-    render() {
-        return (
-            <form className="search" action="" method="get">
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Search tweets"
-                    name="search"
-                    onChange={this.handleTweetSearch}
-                />
-                <button
-                    type="submit"
-                >
-                    <i className="fa fa-search"></i>
-                </button>
-                
-            </form>
-        )
+    const inputStyle = { 
+      display: "flex",
+      padding: '15px',
+      fontSize: '18px',
+      border: '1px solid gray',
+      float: 'left',
+      width: '100%',
+      background: '#f1f1f1',
+      borderRadius: '25px',
+      marginRight: '15px',
     }
+
+
+
+    return (
+        <form className="search" action="" method="get">
+            <Autocomplete 
+              items={suggestions}
+              inputProps={{style: inputStyle}}
+              onChange={handleTweetSearch}
+              value={query}
+              getItemValue={item => item._source.text}
+              renderItem={(item, isHighlighted) =>
+                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                  {item._source.text}
+                </div>
+              }
+              onSelect={query => setQuery(query)}
+            />
+            
+            <button
+                type="submit"
+            >
+                <i className="fa fa-search"></i>
+            </button>
+        </form>
+    )
 }
 
 export default SearchForm;
