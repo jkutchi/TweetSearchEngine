@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchResult from "../SearchResult/SearchResult";
+import "./ResultsPage.css";
 
 
 function ResultsPage() {
@@ -23,7 +24,7 @@ function ResultsPage() {
 
 
     return (
-        <div>
+        <div class="results">
             <SearchForm /><br/><br/><br/>
         
             {
