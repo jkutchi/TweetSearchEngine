@@ -10,7 +10,7 @@ form.search input[type=text] {
     margin-bottom: 15px;
 }
 
-form.search button[type=submit] {
+form.search button[type=button] {
     float: left;
     width: 13%;
     padding: 13px;
@@ -23,6 +23,6 @@ form.search button[type=submit] {
     color: white;
 }
 
-form.search button[type=submit]:hover {
+form.search button[type=button]:hover {
     background: #045292;
 }

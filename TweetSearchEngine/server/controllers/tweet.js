@@ -5,6 +5,7 @@ async function queryTweets(text) {
     const { body } = await client.search({
         index: 'tweets',
         body: {
+            size: 1000,
             query: {
                 match: {
                     text: text
