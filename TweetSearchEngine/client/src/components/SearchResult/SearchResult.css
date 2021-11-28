@@ -1,0 +1,7 @@
+.search-result {
+    margin-bottom: 50px;
+}
+
+.search-result:hover {
+    background-color: rgb(236, 232, 232);
+}
