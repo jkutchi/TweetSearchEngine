@@ -17,7 +17,6 @@ function ResultsPage() {
 
         axios.get(`http://${host}:${port}/search/${query}`).then((res) => {
           setTweets(res.data);
-          console.log(tweets);
       });
 
       }, []);
@@ -29,11 +28,9 @@ function ResultsPage() {
         
             {
             tweets.map((tweet) => 
+                
                 <SearchResult
-                    text={tweet._source.text}
-                    wiki_url={tweet._source.named_entities[0].wiki_url}
-                    wiki_text={tweet._source.named_entities[0].text}
-                    username={tweet._source.user.screen_name}
+                    tweet={tweet._source}
                 />
             )
             }

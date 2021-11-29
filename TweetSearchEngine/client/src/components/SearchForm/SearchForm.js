@@ -19,7 +19,14 @@ function SearchForm() {
       axios.get(`http://${host}:${port2}/search/${query}`).then((res) => {
           setSuggestions(res.data);
       });
-  };
+    }
+
+    function onEnterKeyPressed(e) {
+      console.log("test")
+      if (e.key === "Enter") {
+        goToResults();
+      }
+    }
 
     useEffect(() => {
       const tempQuery = new URLSearchParams(search).get('q');
@@ -56,6 +63,7 @@ function SearchForm() {
                 </div>
               }
               onSelect={query => setQuery(query)}
+              onKeyPress={onEnterKeyPressed}
             />
             
             <button
