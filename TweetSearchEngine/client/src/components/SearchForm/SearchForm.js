@@ -16,9 +16,13 @@ function SearchForm() {
 
     function handleTweetSuggestions(e) {
       setQuery(e.currentTarget.value);
-      axios.get(`http://${host}:${port2}/search/${query}`).then((res) => {
-          setSuggestions(res.data);
-      });
+      if (e.currentTarget.value === "") {
+        setSuggestions([]);
+      } else {
+        axios.get(`http://${host}:${port2}/search/${e.currentTarget.value}`).then((res) => {
+            setSuggestions(res.data);
+        });
+    }
     }
 
     function onEnterKeyPressed(e) {
@@ -30,7 +34,10 @@ function SearchForm() {
 
     useEffect(() => {
       const tempQuery = new URLSearchParams(search).get('q');
-      setQuery(tempQuery);
+      if (tempQuery != null || tempQuery != '')
+      {
+        setQuery(tempQuery);
+      }
     }, []);
 
     function goToResults() {

@@ -7,12 +7,17 @@ async function queryTweets(text) {
         body: {
             size: 1000,
             query: {
-                match: {
-                    text: text
+                bool: {
+                    should: [
+                        { match: { "text": text } },
+                        { match: { "text.english_stemming": text } },
+                        { match: { "text.edge_ngram_analyzer": text } }
+                    ]
                 }
             }
         }
-    })
+    });
+
     return body.hits.hits;
 }
 
