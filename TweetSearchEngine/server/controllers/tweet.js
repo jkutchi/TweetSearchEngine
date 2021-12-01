@@ -14,6 +14,14 @@ async function queryTweets(text) {
                         { match: { "text.edge_ngram_analyzer": text } }
                     ]
                 }
+            },
+            aggs: {
+                group_by_month: {
+                    date_histogram: {
+                        field: "created_at",
+                        calendar_interval: "month"
+                    }
+                }
             }
         }
     });
