@@ -2,8 +2,6 @@ import "./SearchResult.css";
 
 function SearchResult(props) {
 
-    console.log(props);
-
     var text = props.tweet.text;
 
     var wiki_url;

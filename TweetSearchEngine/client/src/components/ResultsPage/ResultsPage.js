@@ -27,27 +27,39 @@ function ResultsPage() {
     const tweetsPerPage = 10;
     const search = useLocation().search;
     const host = window.location.hostname;
-    const port = 5000;
-    var [tweets, setTweets] = useState([]);
+
+    const port1 = 3000;
+    const port2 = 5000;
+    
     const [currentTweets, setCurrentTweets] = useState([]);
     const [pageCount, setPageCount] = useState(0);
-    const [tweetOffset, setTweetOffset] = useState(0);
+    const [activePage, setActivePage] = useState(1);
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
-        const endOffset = tweetOffset + tweetsPerPage;
-        const query = new URLSearchParams(search).get('q');
 
-        axios.get(`http://${host}:${port}/search/${query}`).then((res) => {
-          setTweets(res.data);
-          setCurrentTweets(res.data.slice(tweetOffset, endOffset));
-          setPageCount(Math.ceil(res.data.length / tweetsPerPage));
+        // Get and set query parameters.
+        const tempQuery = new URLSearchParams(search).get('q');
+        setQuery(tempQuery);
+
+        axios.get(`http://${host}:${port2}/search/${tempQuery}`).then((res) => {
+
+            // Get and set the active page.
+            const currentPage = new URLSearchParams(search).get('page');
+            setActivePage(currentPage);
+
+            let tweetOffset = ((currentPage - 1) * tweetsPerPage) % res.data.length;
+            let endOffset = tweetOffset + tweetsPerPage;
+
+            setCurrentTweets(res.data.slice(tweetOffset, endOffset));
+            setPageCount(Math.ceil(res.data.length / tweetsPerPage));
       });
 
-      }, [tweetOffset, tweetsPerPage]);
+      }, []);
       
     function handlePageClick(e) {
-        const newOffset = (e.selected * tweetsPerPage) % tweets.length;
-        setTweetOffset(newOffset);
+        let newPage = e.selected + 1;
+        window.location.href = `http://${host}:${port1}/results/?page=${newPage}&q=${query}`;
     }
 
     return (
@@ -62,7 +74,7 @@ function ResultsPage() {
                 pageCount={pageCount}
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
-                containerClassName={"pagination"}
+                containerClassName="pagination justify-content-center"
                 pageClassName="page-item"
                 pageLinkClassName="page-link"
                 previousClassName="page-item"
@@ -70,6 +82,7 @@ function ResultsPage() {
                 nextClassName="page-item"
                 nextLinkClassName="page-link"
                 activeClassName="active"
+                forcePage={activePage - 1}
             />
         </div>
     );

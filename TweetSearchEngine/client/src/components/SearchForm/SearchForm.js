@@ -41,7 +41,7 @@ function SearchForm() {
     }, []);
 
     function goToResults() {
-      window.location.href = `http://${host}:${port1}/results/?q=${query}`;
+      window.location.href = `http://${host}:${port1}/results/?page=1&q=${query}`;
     }
 
     const inputStyle = { 
