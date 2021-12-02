@@ -44,8 +44,8 @@ function SearchResult(props) {
 
     return (
         <>
+            {monthAndYear}
             <div class="search-result">
-                {monthAndYear}
                 <p><b>Text:</b> {text}</p>
                 <p><b>Username:</b> {username}</p>
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
