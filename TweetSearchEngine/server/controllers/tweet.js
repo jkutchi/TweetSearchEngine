@@ -15,14 +15,12 @@ async function queryTweets(text) {
                     ]
                 }
             },
-            aggs: {
-                group_by_month: {
-                    date_histogram: {
-                        field: "created_at",
-                        calendar_interval: "month"
-                    }
+            sort: [{
+                created_at: {
+                    order: "asc",
+                    format: "yyyy-MM-dd HH:mm:ss"
                 }
-            }
+            }]
         }
     });
 
