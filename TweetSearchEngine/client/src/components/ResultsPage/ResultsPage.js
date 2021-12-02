@@ -7,15 +7,36 @@ import SearchResult from "../SearchResult/SearchResult";
 import "./ResultsPage.css";
 import { ReactDOM } from "react";
 
+var monthAndYear = "";
+const monthNames = ["January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"];
+
+/**
+ * 
+ * @param {month and year string} newMonthAndYear 
+ * @returns true if month and year has changed
+ */
+function displayMonthAndYear(newMonthAndYear) {
+    if (monthAndYear != newMonthAndYear) {
+        monthAndYear = newMonthAndYear;
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function Tweets({ currentTweets }) {
+
     return (
         <>
             {
-                currentTweets.map((tweet) => 
-                
-                <SearchResult
-                    tweet={tweet._source}
-                />
+                currentTweets.map((tweet) => (
+                    <SearchResult
+                        tweet={tweet._source}
+                        displayMonthAndYear={displayMonthAndYear(monthNames[new Date(tweet._source.created_at).getMonth()] + " " 
+                        + new Date(tweet._source.created_at).getFullYear())}
+                    />
+                    )
                 )
             }
         </>

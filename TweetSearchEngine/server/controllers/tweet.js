@@ -14,7 +14,13 @@ async function queryTweets(text) {
                         { match: { "text.edge_ngram_analyzer": text } }
                     ]
                 }
-            }
+            },
+            sort: [{
+                created_at: {
+                    order: "asc",
+                    format: "yyyy-MM-dd HH:mm:ss"
+                }
+            }]
         }
     });
 
