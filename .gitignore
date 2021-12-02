@@ -1,0 +1,4 @@
+# dependencies
+TweetSearchEngine/node_modules
+TweetSearchEngine/server/node_modules
+TweetSearchEngine/client/node_modules
