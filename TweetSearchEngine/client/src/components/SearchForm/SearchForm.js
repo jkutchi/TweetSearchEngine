@@ -25,7 +25,7 @@ function SearchForm() {
     }
     }
 
-    function onEnterKeyPressed(e) {
+    function handleKeyDown(e) {
       console.log("test")
       if (e.key === "Enter") {
         goToResults();
@@ -56,7 +56,7 @@ function SearchForm() {
     }
 
     return (
-        <form className="search" method="get">
+        <div className="search">
             <Autocomplete 
               items={suggestions}
               wrapperStyle={{style: inputStyle}}
@@ -70,7 +70,7 @@ function SearchForm() {
                 </div>
               }
               onSelect={query => setQuery(query)}
-              onKeyPress={onEnterKeyPressed}
+              onKeyDown={handleKeyDown}
             />
             
             <button
@@ -79,7 +79,7 @@ function SearchForm() {
             >
                 <i className="fa fa-search"></i>
             </button>
-        </form>
+        </div>
     )
 }
 
