@@ -23,13 +23,20 @@ async function queryTweets(text) {
             }]
         }
     });
+    console.log(body)
 
     return body.hits.hits;
 }
 
 async function getTweets(req, res) {
-    const results = await queryTweets(req.params.query);
-    res.send(results);
+    try{
+        console.log(req.params.query)
+        const results = await queryTweets(req.params.query);
+        res.send(results);
+    } catch(error){
+        console.log(error);
+    }
+    
 }
 
 module.exports = { getTweets };
