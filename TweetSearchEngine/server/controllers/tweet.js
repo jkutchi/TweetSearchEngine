@@ -28,8 +28,13 @@ async function queryTweets(text) {
 }
 
 async function getTweets(req, res) {
-    const results = await queryTweets(req.params.query);
-    res.send(results);
+    try{
+        const results = await queryTweets(req.params.query);
+        res.send(results);
+    } catch(error){
+        console.log(error);
+    }
+    
 }
 
 module.exports = { getTweets };

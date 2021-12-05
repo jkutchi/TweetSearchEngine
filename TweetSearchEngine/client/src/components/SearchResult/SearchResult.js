@@ -1,5 +1,6 @@
 import "./SearchResult.css";
-
+import Popup from "reactjs-popup";
+import 'reactjs-popup/dist/index.css';
 function SearchResult(props) {
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -38,10 +39,32 @@ function SearchResult(props) {
 
     var renderWikiLink;
 
+    console.log(props.tweet);
     if (wiki_url) {
         renderWikiLink = <div><b>Wikipedia URL:</b> <a href={wiki_url} target="_blank">{wiki_text}</a></div>
     }
 
+    const styles = {
+        
+        backgroundColor: 'white',
+        width: '90%',
+        marginBottom: '15px',
+        padding: '15px',
+        color: 'green',
+        boxShadow: 'rgb(0,0,0,0.44) 0px 5px 5px',
+    };
+    //console.log(props.tweet.named_entities.length);
+    if(props.tweet.named_entities.length > 1){
+         ///var sm = props.tweet.named_entities.map(()=>{});
+        var tage_enties =  props.tweet.named_entities.map((named_entities) => 
+        <div class="popup-content" key={named_entities.text} style={styles}>
+            <a href={named_entities.wiki_url}>{named_entities.text}</a>
+        </div>) 
+        var named_entities  = <Popup trigger={<button>Summary</button>} position={"right center"}>{tage_enties}</Popup>
+        
+    }
+    
+    
     return (
         <>
             {monthAndYear}
@@ -51,7 +74,7 @@ function SearchResult(props) {
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
                 <p><b>Location:</b> {location}</p>
                 {renderWikiLink}
-                
+                {named_entities}
             </div>
         </>
     );
