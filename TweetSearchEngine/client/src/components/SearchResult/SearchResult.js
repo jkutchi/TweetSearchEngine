@@ -1,32 +1,30 @@
 import "./SearchResult.css";
-import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
 function SearchResult(props) {
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
                         "July", "August", "September", "October", "November", "December"];
 
-    var text = props.tweet.text;
+    var text = props.tweet._source.text;
 
     var wiki_url;
     var wiki_text;
 
-    if (props.tweet.named_entities.length) {
+    if (props.tweet._source.named_entities.length) {
         // Check if the "named_entities" property exists.
-        if (props.tweet.named_entities[0].wiki_url) {
+        if (props.tweet._source.named_entities[0].wiki_url) {
             // If the "wiki_url" property exists, set it.
-            wiki_url=props.tweet.named_entities[0].wiki_url;
+            wiki_url=props.tweet._source.named_entities[0].wiki_url;
         }
         
-        if (props.tweet.named_entities[0].text) {
+        if (props.tweet._source.named_entities[0].text) {
             // If the the "wiki_text" propery exists, set it.
-            wiki_text=props.tweet.named_entities[0].text;
+            wiki_text=props.tweet._source.named_entities[0].text;
         }
     }
     
-    var username = props.tweet.user.screen_name;
+    var username = props.tweet._source.user.screen_name;
 
-    var timestamp = new Date(props.tweet.created_at);
+    var timestamp = new Date(props.tweet._source.created_at);
 
     var monthAndYear = "";
 
@@ -35,35 +33,25 @@ function SearchResult(props) {
         monthAndYear = <h2><u>{monthNames[timestamp.getMonth()] + " " + timestamp.getFullYear()}</u></h2>
     }
     
-    var location = props.tweet.user.location;
+    var location = "";
+
+    if (props.tweet._source.user.location) {
+        location = <p><b>Location:</b> {props.tweet._source.user.location}</p>
+    }
 
     var renderWikiLink;
 
-    console.log(props.tweet);
     if (wiki_url) {
         renderWikiLink = <div><b>Wikipedia URL:</b> <a href={wiki_url} target="_blank">{wiki_text}</a></div>
     }
 
-    const styles = {
-        
-        backgroundColor: 'white',
-        width: '90%',
-        marginBottom: '15px',
-        padding: '15px',
-        color: 'green',
-        boxShadow: 'rgb(0,0,0,0.44) 0px 5px 5px',
-    };
-    //console.log(props.tweet.named_entities.length);
-    if(props.tweet.named_entities.length > 1){
-         ///var sm = props.tweet.named_entities.map(()=>{});
-        var tage_enties =  props.tweet.named_entities.map((named_entities) => 
-        <div class="popup-content" key={named_entities.text} style={styles}>
-            <a href={named_entities.wiki_url}>{named_entities.text}</a>
-        </div>) 
-        var named_entities  = <Popup trigger={<button>Summary</button>} position={"right center"}>{tage_enties}</Popup>
-        
+    var host = window.location.hostname;
+    var port = 3000;
+    var id = props.tweet._id;
+
+    function handleClick() {
+        window.location.href = `http://${host}:${port}/summary/?id=${id}`;
     }
-    
     
     return (
         <>
@@ -72,9 +60,9 @@ function SearchResult(props) {
                 <p><b>Text:</b> {text}</p>
                 <p><b>Username:</b> {username}</p>
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
-                <p><b>Location:</b> {location}</p>
+                {location}
                 {renderWikiLink}
-                {named_entities}
+                <button className="more-info" onClick={handleClick}>More Info</button>
             </div>
         </>
     );

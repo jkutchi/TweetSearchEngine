@@ -32,7 +32,7 @@ function Tweets({ currentTweets }) {
             {
                 currentTweets.map((tweet) => (
                     <SearchResult
-                        tweet={tweet._source}
+                        tweet={tweet}
                         displayMonthAndYear={displayMonthAndYear(monthNames[new Date(tweet._source.created_at).getMonth()] + " " 
                         + new Date(tweet._source.created_at).getFullYear())}
                     />

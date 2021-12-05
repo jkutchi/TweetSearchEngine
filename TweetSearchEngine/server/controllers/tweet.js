@@ -1,9 +1,11 @@
 const { Client } = require('@elastic/elasticsearch');
 const client = new Client({ node: 'http://localhost:9200' });
 
+const index = "tweets";
+
 async function queryTweets(text) {
     const { body } = await client.search({
-        index: 'tweets',
+        index: index,
         body: {
             size: 1000,
             query: {
@@ -27,14 +29,31 @@ async function queryTweets(text) {
     return body.hits.hits;
 }
 
-async function getTweets(req, res) {
-    try{
-        const results = await queryTweets(req.params.query);
-        res.send(results);
-    } catch(error){
-        console.log(error);
-    }
-    
+async function getTweetById(id) {
+    const { body } = await client.get({
+        index: index,
+        id: id
+    });
+
+    return body;
 }
 
-module.exports = { getTweets };
+async function getTweets(req, res) {
+    try {
+        const results = await queryTweets(req.params.query);
+        res.send(results);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getTweet(req, res) {
+    try {
+        const result = await getTweetById(req.params.id);
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getTweets, getTweet };
