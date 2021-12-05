@@ -57,9 +57,11 @@ function SearchResult(props) {
     if(props.tweet.named_entities.length > 1){
          ///var sm = props.tweet.named_entities.map(()=>{});
         var tage_enties =  props.tweet.named_entities.map((named_entities) => 
-        <div key={named_entities.text} style={styles}>
+        <div class="popup-content" key={named_entities.text} style={styles}>
             <a href={named_entities.wiki_url}>{named_entities.text}</a>
         </div>) 
+        var named_entities  = <Popup trigger={<button>Summary</button>} position={"right center"}>{tage_enties}</Popup>
+        
     }
     
     
@@ -72,24 +74,7 @@ function SearchResult(props) {
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
                 <p><b>Location:</b> {location}</p>
                 {renderWikiLink}
-                
-                
-                <Popup trigger={<button>Summary</button>} position="right center">
-                    
-
-
-                        { tage_enties}
-                        
-                    
-                    {close => (
-                        <div>
-                        Content here
-                        <a className="close" onClick={close}>
-                        &times;
-                        </a>
-                        </div>
-                    )}
-                </Popup>
+                {named_entities}
             </div>
         </>
     );
