@@ -1,4 +1,6 @@
 import "./SearchResult.css";
+import { TwitterTweetEmbed } from "react-twitter-embed";
+
 function SearchResult(props) {
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -6,21 +8,6 @@ function SearchResult(props) {
 
     var text = props.tweet._source.text;
 
-    var wiki_url;
-    var wiki_text;
-
-    if (props.tweet._source.named_entities.length) {
-        // Check if the "named_entities" property exists.
-        if (props.tweet._source.named_entities[0].wiki_url) {
-            // If the "wiki_url" property exists, set it.
-            wiki_url=props.tweet._source.named_entities[0].wiki_url;
-        }
-        
-        if (props.tweet._source.named_entities[0].text) {
-            // If the the "wiki_text" propery exists, set it.
-            wiki_text=props.tweet._source.named_entities[0].text;
-        }
-    }
     
     var username = props.tweet._source.user.screen_name;
 
@@ -39,12 +26,6 @@ function SearchResult(props) {
         location = <p><b>Location:</b> {props.tweet._source.user.location}</p>
     }
 
-    var renderWikiLink;
-
-    if (wiki_url) {
-        renderWikiLink = <div><b>Wikipedia URL:</b> <a href={wiki_url} target="_blank">{wiki_text}</a></div>
-    }
-
     var host = window.location.hostname;
     var port = 3000;
     var id = props.tweet._id;
@@ -57,11 +38,12 @@ function SearchResult(props) {
         <>
             {monthAndYear}
             <div class="search-result">
+                <TwitterTweetEmbed
+                    tweetId={props.tweet._source.id.toString()} />
                 <p><b>Text:</b> {text}</p>
                 <p><b>Username:</b> {username}</p>
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
                 {location}
-                {renderWikiLink}
                 <button className="more-info" onClick={handleClick}>More Info</button>
             </div>
         </>

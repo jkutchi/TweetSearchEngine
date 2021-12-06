@@ -2,10 +2,6 @@
     margin-bottom: 50px;
 }
 
-.search-result:hover {
-    background-color: rgb(236, 232, 232);
-}
-
 button.more-info {
     margin-top: 20px;
     margin-left: auto;
