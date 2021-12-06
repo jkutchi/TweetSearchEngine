@@ -23,7 +23,7 @@ function SearchResult(props) {
     var location = "";
 
     if (props.tweet._source.user.location) {
-        location = <p><b>Location:</b> {props.tweet._source.user.location}</p>
+        location = <p><b>Location:</b> {props.tweet._source.geo}</p>
     }
 
     var host = window.location.hostname;
