@@ -1,5 +1,6 @@
 import Select from 'react-select';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router";
 import "./AdvancedSearchPanel.css";
 import {Form, Row, Col, Button} from "react-bootstrap";
 import Chips from "react-chips";
@@ -7,6 +8,7 @@ import axios from "axios";
 import Autocomplete from 'react-autocomplete';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
 function AdvancedSearchPanel() {
 
@@ -15,30 +17,61 @@ function AdvancedSearchPanel() {
         { value: "NEGATIVE", label: "Negative" }
     ];
 
+    const search = useLocation().search;
+    const host = window.location.hostname;
+    const port1 = 3000;
+    const port2 = 5000;
+
+    const [text, setText] = useState("");
     const [selectedSentiment, setSelectedSentiment] = useState("");
     const [topics, setTopics] = useState([]);
     const [locations, setLocations] = useState([]);
     const [location, setLocation] = useState("");
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
+    useEffect(() => {
+        const params = new URLSearchParams(search);
+
+        setText(params.get("text") ?? " ");
+        setSelectedSentiment(params.get("sentiment") ?? " ");
+        setTopics(params.get("topic") ?? []);
+        setLocation(params.get("location") ?? " ");
+        setStartDate(params.get("startDate" ?? null));
+        setEndDate(params.get("endDate") ?? null);
+
+    }, []);
 
     function fetchLocations(e) {
-        const host = window.location.hostname;
-        const port1 = 3000;
-        const port2 = 5000;
+    
         setLocation(e.currentTarget.value);
 
         if (e.currentTarget.value === "") {
             setLocations([]);
         } else {
             axios.get(`http://${host}:${port2}/advancedSearch/%20/%20/${e.currentTarget.value}/%20/%20/%20`).then((res) => {
-            setLocations(res.data);
+                setLocations(res.data);
         });
         }
     }
 
     function handleSearchClick() {
-        console.log(selectedSentiment)
+        let paramStr = "";
+        // If text param is not " ", set it as the param string.
+        paramstr = text != " " ? text : paramstr;
+        
+        // Create the topics param.
+        let topicStr = topics.length ? topics.join(" ") : "";
+
+        // If the topics param isn't "" and the paramStr isn't "", add "&" before the topics string.
+        paramStr = topicStr && paramStr ? `${paramStr}&${topicStr}` : paramStr + topicStr;
+
+        let locationStr = location != " " ? location : "";
+        paramStr = locationStr && paramStr ? `${paramStr}&${locationStr}` : paramStr + locationStr;
+ 
+        
+        // window.location.href = `http://${host}:${port1}/results/?`;
+
     }
 
     const inputStyle = { 
@@ -58,7 +91,12 @@ function AdvancedSearchPanel() {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">Text:</Form.Label>
                     <Col sm="10">
-                        <Form.Control type="text" placeholder="Enter text"/>
+                        <Form.Control 
+                            type="text"
+                            placeholder="Enter text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
