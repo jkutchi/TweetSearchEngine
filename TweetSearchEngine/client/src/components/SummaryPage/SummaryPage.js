@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { TwitterFollowButton, TwitterMentionButton } from "react-twitter-embed";
+import { TwitterFollowButton, TwitterTweetEmbed } from "react-twitter-embed";
 import RelatedTweets from "../RelatedTweets/RelatedTweets";
 import axios from "axios";
 import "./SummaryPage.css";
@@ -78,8 +78,10 @@ function SummaryPage() {
             renderChildren ? 
             <>
                 <h1>{text}</h1><br/>
-                <p><b>Text:</b> {text}</p><br/>
+                <TwitterTweetEmbed 
+                    tweetId={tweet._source.id.toString()}/>
                 {userView}<br/><br/>
+                <b>Time Posted: </b> {moment(timestamp).format('MMMM Do YYYY, h:mm:ss a')} <br/><br/>
                 {wikiLinks}<br/><br/>
                 <RelatedTweets 
                     location={location}
