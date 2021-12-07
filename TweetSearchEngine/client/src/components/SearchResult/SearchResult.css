@@ -2,12 +2,6 @@
     margin-bottom: 50px;
 }
 
-button.more-info {
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
 
 button.more-info:hover {
     background-color: rgb(161, 150, 150);

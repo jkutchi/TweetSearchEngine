@@ -84,9 +84,13 @@ function ResultsPage() {
     }
 
     return (
-        <div class="results">
+        <div className="results">
             <SearchForm /><br/><br/><br/>
-            <Tweets currentTweets={currentTweets} />
+            <div className="rowC">
+                <div>
+                    <Tweets currentTweets={currentTweets} />
+                </div>
+            </div>
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="next >"
