@@ -51,6 +51,7 @@ function SummaryPage() {
     const [timestamp, setTimestamp] = useState("");
     const [location, setLocation] = useState("");
     const [wikiLinks, setWikiLinks] = useState("");
+    const [sentiment, setSentiment] = useState("");
 
     var [renderChildren, setRenderChildren] = useState(false);
 
@@ -65,7 +66,7 @@ function SummaryPage() {
             setUserView(renderUserView(tempTweet.user));
             setTimestamp(new Date(tempTweet.created_at));
             setLocation(tempTweet.geo);
-            
+            setSentiment(tempTweet.sentiment);
             setWikiLinks(renderWikiLinks(tempTweet.named_entities));
             setRenderChildren(true);
         });
@@ -81,11 +82,14 @@ function SummaryPage() {
                 <TwitterTweetEmbed 
                     tweetId={tweet._source.id.toString()}/>
                 {userView}<br/><br/>
-                <b>Time Posted: </b> {moment(timestamp).format('MMMM Do YYYY, h:mm:ss a')} <br/><br/>
+                <h2><u>Analytics</u></h2>
+                <b>Time Posted: </b> {moment(timestamp).format('MMMM Do YYYY, h:mm:ss a')} <br/>
+                <b>Sentiment: </b> {sentiment} <br/><br/>
                 {wikiLinks}<br/><br/>
                 <RelatedTweets 
                     location={location}
                     timestamp={timestamp}
+                    namedEntities={tweet._source.named_entities}
                     id={tweet._id}
                 />
             </> 

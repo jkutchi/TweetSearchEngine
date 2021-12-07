@@ -43,11 +43,11 @@ function RelatedTweets(props) {
 
     var startDate = moment(props.timestamp, "YYYY-MM-DD hh:mm:ss").subtract(30, 'days');
     var endDate = moment(props.timestamp, "YYYY-MM-DD hh:mm:ss").add(30, 'days');
-    
+    var topics = props.namedEntities.map((entity) => entity.text).join(" ");
     const [relatedTweets, setRelatedTweets] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://${host}:${port}/advancedSearch/%20/%20/${props.location}/%20/${startDate}/${endDate}`).then((res) => {
+        axios.get(`http://${host}:${port}/advancedSearch/%20/${topics}/${props.location}/%20/${startDate}/${endDate}`).then((res) => {
             setRelatedTweets(res.data);
         });
     }, [])
