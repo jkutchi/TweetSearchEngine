@@ -37,8 +37,8 @@ function AdvancedSearchPanel() {
         setSelectedSentiment(params.get("sentiment") ?? " ");
         setTopics(params.get("topic") ?? []);
         setLocation(params.get("location") ?? " ");
-        setStartDate(new Date(params.get("startDate")) ?? null);
-        setEndDate(new Date(params.get("endDate")) ?? null);
+        setStartDate(params.get("startDate") !== null ? new Date(params.get("startDate")) : null);
+        setEndDate(params.get("endDate") !== null ? new Date(params.get("endDate")) : null);
 
     }, []);
 
@@ -68,6 +68,9 @@ function AdvancedSearchPanel() {
 
         let locationStr = location != " " ? `location=${location}` : "";
         paramStr = locationStr && paramStr ? `${paramStr}&${locationStr}` : paramStr + locationStr;
+
+        let sentimentStr = selectedSentiment != " " ? `sentiment=${selectedSentiment}` : "";
+        paramStr = sentimentStr && paramStr ? `${paramStr}&${sentimentStr}` : paramStr + sentimentStr;
  
         let startDateStr = startDate !== null ? `startDate=${moment(startDate).format("YYYY-MM-DD") }`: "";
         paramStr = startDateStr && paramStr ? `${paramStr}&${startDateStr}` : paramStr + startDateStr;
