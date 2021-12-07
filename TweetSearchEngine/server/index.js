@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const searchRoutes = require('./routes/search');
 const summaryRoutes = require('./routes/summary');
+const advancedSearchRoutes = require('./routes/advancedSearch');
 
 const port = process.env.PORT || 5000;
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use('/search', searchRoutes);
 app.use('/summary', summaryRoutes);
+app.use('/advancedSearch', advancedSearchRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
