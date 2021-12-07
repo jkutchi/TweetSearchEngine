@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
 import SearchResult from "../SearchResult/SearchResult";
+import AdvancedSearchPanel from "../AdvancedSearchPanel/AdvancedSearchPanel";
 import "./ResultsPage.css";
 import { ReactDOM } from "react";
 
@@ -85,11 +86,12 @@ function ResultsPage() {
 
     return (
         <div className="results">
-            <SearchForm /><br/><br/><br/>
+            <SearchForm /><br/><br/><br/><br/><br/>
             <div className="rowC">
-                <div>
+                <div style={{width: "50%"}}>
                     <Tweets currentTweets={currentTweets} />
                 </div>
+                <AdvancedSearchPanel />
             </div>
             <ReactPaginate
                 breakLabel="..."
