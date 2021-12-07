@@ -37,8 +37,8 @@ function AdvancedSearchPanel() {
         setSelectedSentiment(params.get("sentiment") ?? " ");
         setTopics(params.get("topic") ?? []);
         setLocation(params.get("location") ?? " ");
-        setStartDate(params.get("startDate" ?? null));
-        setEndDate(params.get("endDate") ?? null);
+        setStartDate(new Date(params.get("startDate")) ?? null);
+        setEndDate(new Date(params.get("endDate")) ?? null);
 
     }, []);
 
@@ -58,24 +58,24 @@ function AdvancedSearchPanel() {
     function handleSearchClick() {
         let paramStr = "";
         // If text param is not " ", set it as the param string.
-        paramstr = text != " " ? text : paramstr;
+        paramStr = text != " " ? `text=${text}` : paramStr;
         
         // Create the topics param.
-        let topicStr = topics.length ? topics.join(" ") : "";
+        let topicStr = topics.length ? `topics=${topics.join(" ")}` : "";
 
         // If the topics param isn't "" and the paramStr isn't "", add "&" before the topics string.
         paramStr = topicStr && paramStr ? `${paramStr}&${topicStr}` : paramStr + topicStr;
 
-        let locationStr = location != " " ? location : "";
+        let locationStr = location != " " ? `location=${location}` : "";
         paramStr = locationStr && paramStr ? `${paramStr}&${locationStr}` : paramStr + locationStr;
  
-        let startDateStr = startDate !== null ? moment(startDate).format("YYYY-MM-DD") : "";
+        let startDateStr = startDate !== null ? `startDate=${moment(startDate).format("YYYY-MM-DD") }`: "";
         paramStr = startDateStr && paramStr ? `${paramStr}&${startDateStr}` : paramStr + startDateStr;
 
-        let endDateStr = startDate !== null ? moment(endDate).format("YYYY-MM-DD") : "";
+        let endDateStr = startDate !== null ? `endDate=${moment(endDate).format("YYYY-MM-DD")}` : "";
         paramStr = endDateStr && paramStr ? `${paramStr}&${endDateStr}` : paramStr + endDateStr;
         
-        // window.location.href = `http://${host}:${port1}/results/?`;
+        window.location.href = `http://${host}:${port1}/results/?${paramStr}`;
 
     }
 
