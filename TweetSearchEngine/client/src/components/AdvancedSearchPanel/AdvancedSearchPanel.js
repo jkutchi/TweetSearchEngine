@@ -69,6 +69,11 @@ function AdvancedSearchPanel() {
         let locationStr = location != " " ? location : "";
         paramStr = locationStr && paramStr ? `${paramStr}&${locationStr}` : paramStr + locationStr;
  
+        let startDateStr = startDate !== null ? moment(startDate).format("YYYY-MM-DD") : "";
+        paramStr = startDateStr && paramStr ? `${paramStr}&${startDateStr}` : paramStr + startDateStr;
+
+        let endDateStr = startDate !== null ? moment(endDate).format("YYYY-MM-DD") : "";
+        paramStr = endDateStr && paramStr ? `${paramStr}&${endDateStr}` : paramStr + endDateStr;
         
         // window.location.href = `http://${host}:${port1}/results/?`;
 
