@@ -16,7 +16,6 @@ async function queryTweets(text) {
                         { match: { "text.english_stemming": text } },
                         { match: { "text.edge_ngram_analyzer": text } },
                         { match: { "geo": text } },
-                        { match: { "geo.english_stemming": text } },
                         { match: { "geo.edge_ngram_analyzer": text } },
                         { match: { "named_entities.text": text } },
                         { match: { "named_entities.text.english_stemming": text } },

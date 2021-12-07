@@ -1,5 +1,6 @@
 import "./SearchResult.css";
 import { TwitterTweetEmbed } from "react-twitter-embed";
+import Button from "react-bootstrap/Button";
 
 function SearchResult(props) {
 
@@ -44,7 +45,7 @@ function SearchResult(props) {
                 <p><b>Username:</b> {username}</p>
                 <p><b>Timestamp:</b> {timestamp.toUTCString()}</p>
                 {location}
-                <button className="more-info" onClick={handleClick}>More Info</button>
+                <Button onClick={handleClick}>More Info</Button>
             </div>
         </>
     );
