@@ -60,22 +60,45 @@ function ResultsPage() {
 
     useEffect(() => {
 
+        const params = new URLSearchParams(search);
+
         // Get and set query parameters.
-        const tempQuery = new URLSearchParams(search).get('q');
-        setQuery(tempQuery);
+        const tempQuery = params.get('q');
 
-        axios.get(`http://${host}:${port2}/search/${tempQuery}`).then((res) => {
+        if (tempQuery !== null) {
+            setQuery(tempQuery);
+            axios.get(`http://${host}:${port2}/search/${tempQuery}`).then((res) => {
 
-            // Get and set the active page.
-            const currentPage = new URLSearchParams(search).get('page');
-            setActivePage(currentPage);
+                // Get and set the active page.
+                const currentPage = params.get('page');
+                setActivePage(currentPage);
 
-            let tweetOffset = ((currentPage - 1) * tweetsPerPage) % res.data.length;
-            let endOffset = tweetOffset + tweetsPerPage;
+                let tweetOffset = ((currentPage - 1) * tweetsPerPage) % res.data.length;
+                let endOffset = tweetOffset + tweetsPerPage;
 
-            setCurrentTweets(res.data.slice(tweetOffset, endOffset));
-            setPageCount(Math.ceil(res.data.length / tweetsPerPage));
-      });
+                setCurrentTweets(res.data.slice(tweetOffset, endOffset));
+                setPageCount(Math.ceil(res.data.length / tweetsPerPage));
+            });
+        } else {
+            const text = params.get('text') ?? "%20";
+            const topics = params.get('topics') ?? "%20";
+            const sentiment = params.get('sentiment') ?? "%20";
+            const location = params.get('location') ?? "%20";
+            const startDate = params.get('startDate') ?? "%20";
+            const endDate = params.get('endDate') ?? "%20";
+
+            axios.get(`http://${host}:${port2}/advancedSearch/${text}/${topics}/${location}/${sentiment}/${startDate}/${endDate}`).then((res) => {
+                // Get and set the active page.
+                const currentPage = params.get('page');
+                setActivePage(currentPage);
+
+                let tweetOffset = ((currentPage - 1) * tweetsPerPage) % res.data.length;
+                let endOffset = tweetOffset + tweetsPerPage;
+
+                setCurrentTweets(res.data.slice(tweetOffset, endOffset));
+                setPageCount(Math.ceil(res.data.length / tweetsPerPage));
+            });
+        }
 
       }, []);
       
@@ -85,14 +108,17 @@ function ResultsPage() {
     }
 
     return (
-        <div className="results">
-            <SearchForm /><br/><br/><br/><br/><br/>
-            <div className="rowC">
-                <div style={{width: "50%"}}>
-                    <Tweets currentTweets={currentTweets} />
+        <>
+            <div className="results">
+                <SearchForm /><br/><br/><br/><br/><br/>
+                <div className="rowC">
+                    <div style={{width: "50%"}}>
+                        <Tweets currentTweets={currentTweets} />
+                    </div>
+                    <AdvancedSearchPanel />
                 </div>
-                <AdvancedSearchPanel />
             </div>
+            <div className="footer">
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="next >"
@@ -112,6 +138,7 @@ function ResultsPage() {
                 forcePage={activePage - 1}
             />
         </div>
+    </>
     );
 }
 

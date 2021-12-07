@@ -35,7 +35,7 @@ function AdvancedSearchPanel() {
 
         setText(params.get("text") ?? " ");
         setSelectedSentiment(params.get("sentiment") ?? " ");
-        setTopics(params.get("topic") ?? []);
+        setTopics(params.get("topics") !== null ? params.get("topics").split(" ") : []);
         setLocation(params.get("location") ?? " ");
         setStartDate(params.get("startDate") !== null ? new Date(params.get("startDate")) : null);
         setEndDate(params.get("endDate") !== null ? new Date(params.get("endDate")) : null);
@@ -78,7 +78,7 @@ function AdvancedSearchPanel() {
         let endDateStr = startDate !== null ? `endDate=${moment(endDate).format("YYYY-MM-DD")}` : "";
         paramStr = endDateStr && paramStr ? `${paramStr}&${endDateStr}` : paramStr + endDateStr;
         
-        window.location.href = `http://${host}:${port1}/results/?${paramStr}`;
+        window.location.href = `http://${host}:${port1}/results/?page=1&${paramStr}`;
 
     }
 
@@ -89,7 +89,8 @@ function AdvancedSearchPanel() {
         display: "inline-block",
         border: "1px solid #ccc",
         borderRadius: "4px",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        maxHeight: "50%",
       }
 
     return (
@@ -122,6 +123,7 @@ function AdvancedSearchPanel() {
                     <Col sm="10">
                         <Select 
                             options={sentiments}
+                            value={{ value: selectedSentiment, label: selectedSentiment.toUpperCase() }}
                             onChange={(option) => setSelectedSentiment(option.value)}
                         />
                     </Col>
