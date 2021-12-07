@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { TwitterFollowButton, TwitterMentionButton } from "react-twitter-embed";
+import RelatedTweets from "../RelatedTweets/RelatedTweets";
 import axios from "axios";
 import "./SummaryPage.css";
+import moment from "moment";
 
 function renderUserView(user) {
     return (
@@ -58,15 +60,13 @@ function SummaryPage() {
         axios.get(`http://${host}:${port}/summary/${id}`).then((res) => {
 
             const tempTweet = res.data._source;
-            console.log(tempTweet);
-            setTweet(tempTweet);
+            setTweet(res.data);
             setText(tempTweet.text);
             setUserView(renderUserView(tempTweet.user));
             setTimestamp(new Date(tempTweet.created_at));
             setLocation(tempTweet.geo);
             
             setWikiLinks(renderWikiLinks(tempTweet.named_entities));
-
             setRenderChildren(true);
         });
 
@@ -80,7 +80,12 @@ function SummaryPage() {
                 <h1>{text}</h1><br/>
                 <p><b>Text:</b> {text}</p><br/>
                 {userView}<br/><br/>
-                {wikiLinks}
+                {wikiLinks}<br/><br/>
+                <RelatedTweets 
+                    location={location}
+                    timestamp={timestamp}
+                    id={tweet._id}
+                />
             </> 
             : "Loading"
         }

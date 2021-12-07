@@ -14,7 +14,13 @@ async function queryTweets(text) {
                     should: [
                         { match: { "text": text } },
                         { match: { "text.english_stemming": text } },
-                        { match: { "text.edge_ngram_analyzer": text } }
+                        { match: { "text.edge_ngram_analyzer": text } },
+                        { match: { "geo": text } },
+                        { match: { "geo.english_stemming": text } },
+                        { match: { "geo.edge_ngram_analyzer": text } },
+                        { match: { "named_entities.text": text } },
+                        { match: { "named_entities.text.english_stemming": text } },
+                        { match: { "named_entities.text.edge_ngram_analyzer": text } },
                     ]
                 }
             },
@@ -150,15 +156,15 @@ async function advancedQuery(data) {
         }
     };
 
-    if (text)
+    if (text !== ' ')
         esObject = await addTextQuery(esObject, "text", text);
-    if(topic)
+    if(topic !== ' ')
         esObject = await addQuery(esObject, "named_entities.text", topic);
-    if (location)
+    if (location !== ' ')
         esObject = await addLocationQuery(esObject, "geo", location);
-    if (sentiment)
+    if (sentiment !== ' ')
         esObject = await addQuery(esObject, "sentiment", sentiment);
-    if (startDate && endDate)
+    if (startDate !== ' ' && endDate !== ' ')
         esObject = await addDateRange(esObject, "created_at", startDate, endDate);
 
     const { body } = await client.search(esObject);
